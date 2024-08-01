@@ -1,0 +1,61 @@
+WS: No +host_workshop_collection or it is invalid!
+Network: IP 192.168.1.109, mode MP, dedicated Yes, ports 27015 SV / 27005 CL
+Error loading cfg/trusted_keys_base.txt
+Error loading cfg/pure_server_minimal.txt
+PREP OK
+Using map cycle file cfg/mapcycle.txt.
+Client "Just DeWhat" connected (108.51.155.103:27005).
+Client "Golgi Apparatus" connected (24.210.21.36:27006).
+ServerLog: Player [2][Golgi Apparatus] is arming a dupe, size: 22222
+ServerLog: Player [1][Just DeWhat] is arming a dupe, size: 4365
+ServerLog: Player [2][Golgi Apparatus] is arming a dupe, size: 898
+ServerLog: Player [2][Golgi Apparatus] is arming a dupe, size: 2244
+Model missing: models/blob/ufmp/fnaf1/freddyfazbear.mdl
+Model missing: models/blob/ufmp/fnaf1/freddyfazbear.mdl
+ServerLog: Player [2][Golgi Apparatus] is arming a dupe, size: 31243
+ServerLog: Player [2][Golgi Apparatus] is arming a dupe, size: 31243
+ServerLog: Player [1][Just DeWhat] is arming a dupe, size: 3184
+ServerLog: Player [1][Just DeWhat] is arming a dupe, size: 3184
+ServerLog: Player [2][Golgi Apparatus] is arming a dupe, size: 11805
+Golgi Apparatus killed Just DeWhat using crossbow_bolt
+ServerLog: Player [1][Just DeWhat] is arming a dupe, size: 3419
+Just DeWhat was killed by gmod_wheel
+Client "Cak3Lover" connected (65.34.101.218:27005).
+ServerLog: Player [1][Just DeWhat] is arming a dupe, size: 3419
+ServerLog: Player [3][Cak3Lover] is arming a dupe, size: 14118
+ServerLog: Player [2][Golgi Apparatus] is arming a dupe, size: 2169
+ServerLog: Player [2][Golgi Apparatus] is arming a dupe, size: 5196
+Golgi Apparatus killed Just DeWhat using crossbow_bolt
+ServerLog: Player [2][Golgi Apparatus] is arming a dupe, size: 7829
+ERROR: Shotgun Reload called incorrectly!
+ERROR: Shotgun Reload called incorrectly!
+ERROR: Shotgun Reload called incorrectly!
+ERROR: Shotgun Reload called incorrectly!
+ERROR: Shotgun Reload called incorrectly!
+ERROR: Shotgun Reload called incorrectly!
+ERROR: Shotgun Reload called incorrectly!
+ERROR: Shotgun Reload called incorrectly!
+ERROR: Shotgun Reload called incorrectly!
+ERROR: Shotgun Reload called incorrectly!
+ERROR: Shotgun Reload called incorrectly!
+ERROR: Shotgun Reload called incorrectly!
+ERROR: Shotgun Reload called incorrectly!
+ERROR: Shotgun Reload called incorrectly!
+ERROR: Shotgun Reload called incorrectly!
+ERROR: Shotgun Reload called incorrectly!
+ERROR: Shotgun Reload called incorrectly!
+ERROR: Shotgun Reload called incorrectly!
+ServerLog: Player [3][Cak3Lover] is arming a dupe, size: 11805
+Giving Golgi Apparatus a weapon_slam
+ServerLog: Player [3][Cak3Lover] is arming a dupe, size: 3341
+Just DeWhat suicided!
+ServerLog: Player [3][Cak3Lover] is arming a dupe, size: 7516
+ServerLog: Player [2][Golgi Apparatus] is arming a dupe, size: 1511
+Cak3Lover suicided!
+ServerLog: Player [2][Golgi Apparatus] is arming a dupe, size: 1703
+Cak3Lover was killed by worldspawn
+Cak3Lover suicided!
+Dropped Cak3Lover from server (Server shutting down)
+Dropped Golgi Apparatus from server (Server shutting down)
+Dropped Just DeWhat from server (Server shutting down)
+Shutdown function ShutdownMixerControls() not in list!!!
