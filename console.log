@@ -1,61 +1,439 @@
 WS: No +host_workshop_collection or it is invalid!
+Changing gamemode to Trouble in Terrorist Town (terrortown)
 Network: IP 192.168.1.109, mode MP, dedicated Yes, ports 27015 SV / 27005 CL
-Error loading cfg/trusted_keys_base.txt
-Error loading cfg/pure_server_minimal.txt
 PREP OK
+Added file to download: materials/vgui/unknownRole/frame1.png
+Added file to download: materials/vgui/unknownRole/frame2.png
+Added file to download: materials/vgui/unknownRole/frame3.png
+Added file to download: materials/vgui/unknownRole/frame4.png
+Added file to download: materials/vgui/traitorRole/frame1.png
+Added file to download: materials/vgui/traitorRole/frame2.png
+Added file to download: materials/vgui/traitorRole/frame3.png
+Added file to download: materials/vgui/traitorRole/frame4.png
+Added file to download: materials/vgui/detectiveRole/frame1.png
+Added file to download: materials/vgui/detectiveRole/frame2.png
+Added file to download: materials/vgui/detectiveRole/frame3.png
+Added file to download: materials/vgui/detectiveRole/frame4.png
+Included TTT language file: brazilian_portuguese.lua
+Included TTT language file: chef.lua
+Included TTT language file: english.lua
+Included TTT language file: french.lua
+Included TTT language file: german.lua
+Included TTT language file: italian.lua
+Included TTT language file: japanese.lua
+Included TTT language file: russian.lua
+Included TTT language file: simpchinese.lua
+Included TTT language file: spanish.lua
+Included TTT language file: swedish.lua
+Included TTT language file: tradchinese.lua
+Included TTT language file: turkish.lua
+Included TTT language file: ukrainian.lua
+Hello World!
+My name is Dominic!
+Trouble In Terrorist Town gamemode initializing...
 Using map cycle file cfg/mapcycle.txt.
-Client "Just DeWhat" connected (108.51.155.103:27005).
+Attempted to create unknown entity type info_ladder!
+Attempted to create unknown entity type func_buyzone!
+Attempted to create unknown entity type func_buyzone!
+Attempted to create unknown entity type func_hostage_rescue!
 Client "Golgi Apparatus" connected (24.210.21.36:27006).
-ServerLog: Player [2][Golgi Apparatus] is arming a dupe, size: 22222
-ServerLog: Player [1][Just DeWhat] is arming a dupe, size: 4365
-ServerLog: Player [2][Golgi Apparatus] is arming a dupe, size: 898
-ServerLog: Player [2][Golgi Apparatus] is arming a dupe, size: 2244
-Model missing: models/blob/ufmp/fnaf1/freddyfazbear.mdl
-Model missing: models/blob/ufmp/fnaf1/freddyfazbear.mdl
-ServerLog: Player [2][Golgi Apparatus] is arming a dupe, size: 31243
-ServerLog: Player [2][Golgi Apparatus] is arming a dupe, size: 31243
-ServerLog: Player [1][Just DeWhat] is arming a dupe, size: 3184
-ServerLog: Player [1][Just DeWhat] is arming a dupe, size: 3184
-ServerLog: Player [2][Golgi Apparatus] is arming a dupe, size: 11805
-Golgi Apparatus killed Just DeWhat using crossbow_bolt
-ServerLog: Player [1][Just DeWhat] is arming a dupe, size: 3419
-Just DeWhat was killed by gmod_wheel
-Client "Cak3Lover" connected (65.34.101.218:27005).
-ServerLog: Player [1][Just DeWhat] is arming a dupe, size: 3419
-ServerLog: Player [3][Cak3Lover] is arming a dupe, size: 14118
-ServerLog: Player [2][Golgi Apparatus] is arming a dupe, size: 2169
-ServerLog: Player [2][Golgi Apparatus] is arming a dupe, size: 5196
-Golgi Apparatus killed Just DeWhat using crossbow_bolt
-ServerLog: Player [2][Golgi Apparatus] is arming a dupe, size: 7829
-ERROR: Shotgun Reload called incorrectly!
-ERROR: Shotgun Reload called incorrectly!
-ERROR: Shotgun Reload called incorrectly!
-ERROR: Shotgun Reload called incorrectly!
-ERROR: Shotgun Reload called incorrectly!
-ERROR: Shotgun Reload called incorrectly!
-ERROR: Shotgun Reload called incorrectly!
-ERROR: Shotgun Reload called incorrectly!
-ERROR: Shotgun Reload called incorrectly!
-ERROR: Shotgun Reload called incorrectly!
-ERROR: Shotgun Reload called incorrectly!
-ERROR: Shotgun Reload called incorrectly!
-ERROR: Shotgun Reload called incorrectly!
-ERROR: Shotgun Reload called incorrectly!
-ERROR: Shotgun Reload called incorrectly!
-ERROR: Shotgun Reload called incorrectly!
-ERROR: Shotgun Reload called incorrectly!
-ERROR: Shotgun Reload called incorrectly!
-ServerLog: Player [3][Cak3Lover] is arming a dupe, size: 11805
-Giving Golgi Apparatus a weapon_slam
-ServerLog: Player [3][Cak3Lover] is arming a dupe, size: 3341
-Just DeWhat suicided!
-ServerLog: Player [3][Cak3Lover] is arming a dupe, size: 7516
-ServerLog: Player [2][Golgi Apparatus] is arming a dupe, size: 1511
-Cak3Lover suicided!
-ServerLog: Player [2][Golgi Apparatus] is arming a dupe, size: 1703
-Cak3Lover was killed by worldspawn
-Cak3Lover suicided!
-Dropped Cak3Lover from server (Server shutting down)
-Dropped Golgi Apparatus from server (Server shutting down)
-Dropped Just DeWhat from server (Server shutting down)
-Shutdown function ShutdownMixerControls() not in list!!!
+TTT initializing convar settings...
+Attempted to create unknown entity type func_buyzone!
+Attempted to create unknown entity type func_buyzone!
+Attempted to create unknown entity type func_hostage_rescue!
+Weapon/ammo placement script found, attempting import...
+Reading settings from script...
+Removing existing player spawns
+Removing existing weapons/ammo
+Importing entities...
+Spawned 298 entities found in script.
+Weapon placement script import successful!
+
+[ERROR] gamemodes/terrortown/gamemode/weaponry.lua:50: bad argument #1 to 'insert' (table expected, got nil)
+  1. insert - [C]:-1
+   2. GetLoadoutWeapons - gamemodes/terrortown/gamemode/weaponry.lua:50
+    3. GiveLoadoutWeapons - gamemodes/terrortown/gamemode/weaponry.lua:65
+     4. Call - gamemodes/terrortown/gamemode/weaponry.lua:167
+      5. unknown - gamemodes/terrortown/gamemode/player.lua:88
+       6. Spawn - [C]:-1
+        7. SpawnForRound - gamemodes/terrortown/gamemode/player_ext.lua:291
+         8. SpawnWillingPlayers - gamemodes/terrortown/gamemode/init.lua:568
+          9. unknown - gamemodes/terrortown/gamemode/init.lua:419
+
+
+[ERROR] gamemodes/terrortown/gamemode/weaponry.lua:50: bad argument #1 to 'insert' (table expected, got nil)
+  1. insert - [C]:-1
+   2. GetLoadoutWeapons - gamemodes/terrortown/gamemode/weaponry.lua:50
+    3. GiveLoadoutWeapons - gamemodes/terrortown/gamemode/weaponry.lua:65
+     4. Call - gamemodes/terrortown/gamemode/weaponry.lua:167
+      5. unknown - gamemodes/terrortown/gamemode/player.lua:88
+
+Golgi Apparatusis now a doctor
+ServerLog: Round proper has begun...
+
+[ERROR] gamemodes/terrortown/gamemode/weaponry.lua:50: bad argument #1 to 'insert' (table expected, got nil)
+  1. insert - [C]:-1
+   2. GetLoadoutWeapons - gamemodes/terrortown/gamemode/weaponry.lua:50
+    3. GiveLoadoutWeapons - gamemodes/terrortown/gamemode/weaponry.lua:65
+     4. Call - gamemodes/terrortown/gamemode/weaponry.lua:167
+      5. UpdatePlayerLoadouts - gamemodes/terrortown/gamemode/weaponry.lua:181
+       6. unknown - gamemodes/terrortown/gamemode/init.lua:689
+
+Timer Failed! [prep2begin][@gamemodes/terrortown/gamemode/init.lua (line 495)]
+Hello World!
+My name is Dominic!
+Golgi Apparatus: (AUTOMATED MESSAGE) I have been moved to the Spectator team because I was idle/AFK.
+ServerLog: 03:08.12 - KILL:	 Golgi Apparatus [doctor] killed Golgi Apparatus [doctor]
+ServerLog: Round ended.
+ServerLog: Result: traitors win.
+Attempted to create unknown entity type func_buyzone!
+Attempted to create unknown entity type func_buyzone!
+Attempted to create unknown entity type func_hostage_rescue!
+Weapon/ammo placement script found, attempting import...
+Reading settings from script...
+Removing existing player spawns
+Removing existing weapons/ammo
+Importing entities...
+Spawned 298 entities found in script.
+Weapon placement script import successful!
+ServerLog: Round proper has begun...
+ServerLog: Round ended.
+ServerLog: Result: traitors win.
+Attempted to create unknown entity type func_buyzone!
+Attempted to create unknown entity type func_buyzone!
+Attempted to create unknown entity type func_hostage_rescue!
+Weapon/ammo placement script found, attempting import...
+Reading settings from script...
+Removing existing player spawns
+Removing existing weapons/ammo
+Importing entities...
+Spawned 298 entities found in script.
+Weapon placement script import successful!
+ServerLog: Round proper has begun...
+ServerLog: Round ended.
+ServerLog: Result: traitors win.
+Attempted to create unknown entity type func_buyzone!
+Attempted to create unknown entity type func_buyzone!
+Attempted to create unknown entity type func_hostage_rescue!
+Weapon/ammo placement script found, attempting import...
+Reading settings from script...
+Removing existing player spawns
+Removing existing weapons/ammo
+Importing entities...
+Spawned 298 entities found in script.
+Weapon placement script import successful!
+ServerLog: Round proper has begun...
+ServerLog: Round ended.
+ServerLog: Result: traitors win.
+Attempted to create unknown entity type func_buyzone!
+Attempted to create unknown entity type func_buyzone!
+Attempted to create unknown entity type func_hostage_rescue!
+Weapon/ammo placement script found, attempting import...
+Reading settings from script...
+Removing existing player spawns
+Removing existing weapons/ammo
+Importing entities...
+Spawned 298 entities found in script.
+Weapon placement script import successful!
+ServerLog: Round proper has begun...
+ServerLog: Round ended.
+ServerLog: Result: traitors win.
+Attempted to create unknown entity type func_buyzone!
+Attempted to create unknown entity type func_buyzone!
+Attempted to create unknown entity type func_hostage_rescue!
+Weapon/ammo placement script found, attempting import...
+Reading settings from script...
+Removing existing player spawns
+Removing existing weapons/ammo
+Importing entities...
+Spawned 298 entities found in script.
+Weapon placement script import successful!
+ServerLog: Round proper has begun...
+ServerLog: Round ended.
+ServerLog: Result: traitors win.
+CHANGE LEVEL: cs_assault
+---- Host_Changelevel ----
+Added file to download: materials/vgui/unknownRole/frame1.png
+Added file to download: materials/vgui/unknownRole/frame2.png
+Added file to download: materials/vgui/unknownRole/frame3.png
+Added file to download: materials/vgui/unknownRole/frame4.png
+Added file to download: materials/vgui/traitorRole/frame1.png
+Added file to download: materials/vgui/traitorRole/frame2.png
+Added file to download: materials/vgui/traitorRole/frame3.png
+Added file to download: materials/vgui/traitorRole/frame4.png
+Added file to download: materials/vgui/detectiveRole/frame1.png
+Added file to download: materials/vgui/detectiveRole/frame2.png
+Added file to download: materials/vgui/detectiveRole/frame3.png
+Added file to download: materials/vgui/detectiveRole/frame4.png
+Included TTT language file: brazilian_portuguese.lua
+Included TTT language file: chef.lua
+Included TTT language file: english.lua
+Included TTT language file: french.lua
+Included TTT language file: german.lua
+Included TTT language file: italian.lua
+Included TTT language file: japanese.lua
+Included TTT language file: russian.lua
+Included TTT language file: simpchinese.lua
+Included TTT language file: spanish.lua
+Included TTT language file: swedish.lua
+Included TTT language file: tradchinese.lua
+Included TTT language file: turkish.lua
+Included TTT language file: ukrainian.lua
+Hello World!
+My name is Dominic!
+Trouble In Terrorist Town gamemode initializing...
+Attempted to create unknown entity type info_ladder!
+Attempted to create unknown entity type func_buyzone!
+Attempted to create unknown entity type func_buyzone!
+Attempted to create unknown entity type func_hostage_rescue!
+TTT initializing convar settings...
+Hello World!
+My name is Dominic!
+Attempted to create unknown entity type func_buyzone!
+Attempted to create unknown entity type func_buyzone!
+Attempted to create unknown entity type func_hostage_rescue!
+Weapon/ammo placement script found, attempting import...
+Reading settings from script...
+Removing existing player spawns
+Removing existing weapons/ammo
+Importing entities...
+Spawned 298 entities found in script.
+Weapon placement script import successful!
+Golgi Apparatusis now a doctor
+ServerLog: Round proper has begun...
+Dropped Golgi Apparatus from server (Disconnect by user.)
+Dropped Bot02 from server (Punting bot, server is hibernating)
+Client "Golgi Apparatus" connected (24.210.21.36:27006).
+ServerLog: Round ended.
+ServerLog: Result: traitors win.
+Attempted to create unknown entity type func_buyzone!
+Attempted to create unknown entity type func_buyzone!
+Attempted to create unknown entity type func_hostage_rescue!
+Weapon/ammo placement script found, attempting import...
+Reading settings from script...
+Removing existing player spawns
+Removing existing weapons/ammo
+Importing entities...
+Spawned 298 entities found in script.
+Weapon placement script import successful!
+ServerLog: Round proper has begun...
+ServerLog: Round ended.
+ServerLog: Result: traitors win.
+Attempted to create unknown entity type func_buyzone!
+Attempted to create unknown entity type func_buyzone!
+Attempted to create unknown entity type func_hostage_rescue!
+Weapon/ammo placement script found, attempting import...
+Reading settings from script...
+Removing existing player spawns
+Removing existing weapons/ammo
+Importing entities...
+Spawned 298 entities found in script.
+Weapon placement script import successful!
+Golgi Apparatusis now a doctor
+ServerLog: Round proper has begun...
+ServerLog: 00:23.23 - DMG: 	 Golgi Apparatus [doctor] damaged Bot03 [traitor] for 20 dmg
+ServerLog: Round ended.
+ServerLog: Result: timelimit reached, traitors lose.
+Attempted to create unknown entity type func_buyzone!
+Attempted to create unknown entity type func_buyzone!
+Attempted to create unknown entity type func_hostage_rescue!
+Weapon/ammo placement script found, attempting import...
+Reading settings from script...
+Removing existing player spawns
+Removing existing weapons/ammo
+Importing entities...
+Spawned 298 entities found in script.
+Weapon placement script import successful!
+Bot03is now a doctor
+ServerLog: Round proper has begun...
+Golgi Apparatus: (AUTOMATED MESSAGE) I have been moved to the Spectator team because I was idle/AFK.
+ServerLog: 03:12.04 - KILL:	 Golgi Apparatus [traitor] killed Golgi Apparatus [traitor]
+ServerLog: Round ended.
+ServerLog: Result: innocent win.
+Attempted to create unknown entity type func_buyzone!
+Attempted to create unknown entity type func_buyzone!
+Attempted to create unknown entity type func_hostage_rescue!
+Weapon/ammo placement script found, attempting import...
+Reading settings from script...
+Removing existing player spawns
+Removing existing weapons/ammo
+Importing entities...
+Spawned 298 entities found in script.
+Weapon placement script import successful!
+ServerLog: Round proper has begun...
+ServerLog: Round ended.
+ServerLog: Result: traitors win.
+Attempted to create unknown entity type func_buyzone!
+Attempted to create unknown entity type func_buyzone!
+Attempted to create unknown entity type func_hostage_rescue!
+Weapon/ammo placement script found, attempting import...
+Reading settings from script...
+Removing existing player spawns
+Removing existing weapons/ammo
+Importing entities...
+Spawned 298 entities found in script.
+Weapon placement script import successful!
+ServerLog: Round proper has begun...
+ServerLog: Round ended.
+ServerLog: Result: traitors win.
+CHANGE LEVEL: cs_assault
+---- Host_Changelevel ----
+Added file to download: materials/vgui/unknownRole/frame1.png
+Added file to download: materials/vgui/unknownRole/frame2.png
+Added file to download: materials/vgui/unknownRole/frame3.png
+Added file to download: materials/vgui/unknownRole/frame4.png
+Added file to download: materials/vgui/traitorRole/frame1.png
+Added file to download: materials/vgui/traitorRole/frame2.png
+Added file to download: materials/vgui/traitorRole/frame3.png
+Added file to download: materials/vgui/traitorRole/frame4.png
+Added file to download: materials/vgui/detectiveRole/frame1.png
+Added file to download: materials/vgui/detectiveRole/frame2.png
+Added file to download: materials/vgui/detectiveRole/frame3.png
+Added file to download: materials/vgui/detectiveRole/frame4.png
+Included TTT language file: brazilian_portuguese.lua
+Included TTT language file: chef.lua
+Included TTT language file: english.lua
+Included TTT language file: french.lua
+Included TTT language file: german.lua
+Included TTT language file: italian.lua
+Included TTT language file: japanese.lua
+Included TTT language file: russian.lua
+Included TTT language file: simpchinese.lua
+Included TTT language file: spanish.lua
+Included TTT language file: swedish.lua
+Included TTT language file: tradchinese.lua
+Included TTT language file: turkish.lua
+Included TTT language file: ukrainian.lua
+Hello World!
+My name is Dominic!
+Trouble In Terrorist Town gamemode initializing...
+Attempted to create unknown entity type info_ladder!
+Attempted to create unknown entity type func_buyzone!
+Attempted to create unknown entity type func_buyzone!
+Attempted to create unknown entity type func_hostage_rescue!
+TTT initializing convar settings...
+Attempted to create unknown entity type func_buyzone!
+Attempted to create unknown entity type func_buyzone!
+Attempted to create unknown entity type func_hostage_rescue!
+Weapon/ammo placement script found, attempting import...
+Reading settings from script...
+Removing existing player spawns
+Removing existing weapons/ammo
+Importing entities...
+Spawned 298 entities found in script.
+Weapon placement script import successful!
+ServerLog: Round proper has begun...
+ServerLog: Round ended.
+ServerLog: Result: traitors win.
+Attempted to create unknown entity type func_buyzone!
+Attempted to create unknown entity type func_buyzone!
+Attempted to create unknown entity type func_hostage_rescue!
+Weapon/ammo placement script found, attempting import...
+Reading settings from script...
+Removing existing player spawns
+Removing existing weapons/ammo
+Importing entities...
+Spawned 298 entities found in script.
+Weapon placement script import successful!
+ServerLog: Round proper has begun...
+ServerLog: Round ended.
+ServerLog: Result: traitors win.
+Attempted to create unknown entity type func_buyzone!
+Attempted to create unknown entity type func_buyzone!
+Attempted to create unknown entity type func_hostage_rescue!
+Weapon/ammo placement script found, attempting import...
+Reading settings from script...
+Removing existing player spawns
+Removing existing weapons/ammo
+Importing entities...
+Spawned 298 entities found in script.
+Weapon placement script import successful!
+ServerLog: Round proper has begun...
+ServerLog: Round ended.
+ServerLog: Result: traitors win.
+Attempted to create unknown entity type func_buyzone!
+Attempted to create unknown entity type func_buyzone!
+Attempted to create unknown entity type func_hostage_rescue!
+Weapon/ammo placement script found, attempting import...
+Reading settings from script...
+Removing existing player spawns
+Removing existing weapons/ammo
+Importing entities...
+Spawned 298 entities found in script.
+Weapon placement script import successful!
+Bot04is now a doctor
+ServerLog: Round proper has begun...
+ServerLog: 00:18.81 - DMG: 	 Golgi Apparatus [traitor] damaged Bot04 [doctor] for 14 dmg
+ServerLog: 00:19.96 - DMG: 	 Golgi Apparatus [traitor] damaged Bot04 [doctor] for 68 dmg
+ServerLog: 00:21.69 - DMG: 	 Golgi Apparatus [traitor] damaged Bot04 [doctor] for 25 dmg
+ServerLog: 00:21.69 - KILL:	 Golgi Apparatus [traitor] killed Bot04 [doctor]
+ServerLog: Round ended.
+ServerLog: Result: traitors win.
+Attempted to create unknown entity type func_buyzone!
+Attempted to create unknown entity type func_buyzone!
+Attempted to create unknown entity type func_hostage_rescue!
+Weapon/ammo placement script found, attempting import...
+Reading settings from script...
+Removing existing player spawns
+Removing existing weapons/ammo
+Importing entities...
+Spawned 298 entities found in script.
+Weapon placement script import successful!
+Golgi Apparatusis now a doctor
+ServerLog: Round proper has begun...
+ServerLog: 00:31.85 - DMG: 	 Golgi Apparatus [doctor] damaged Bot04 [traitor] for 200 dmg
+ServerLog: 00:31.85 - KILL:	 Golgi Apparatus [doctor] killed Bot04 [traitor]
+ServerLog: Round ended.
+ServerLog: Result: innocent win.
+Attempted to create unknown entity type func_buyzone!
+Attempted to create unknown entity type func_buyzone!
+Attempted to create unknown entity type func_hostage_rescue!
+Weapon/ammo placement script found, attempting import...
+Reading settings from script...
+Removing existing player spawns
+Removing existing weapons/ammo
+Importing entities...
+Spawned 298 entities found in script.
+Weapon placement script import successful!
+Bot04is now a doctor
+ServerLog: Round proper has begun...
+Golgi Apparatus: (AUTOMATED MESSAGE) I have been moved to the Spectator team because I was idle/AFK.
+ServerLog: 03:28.85 - KILL:	 Golgi Apparatus [traitor] killed Golgi Apparatus [traitor]
+ServerLog: Round ended.
+ServerLog: Result: innocent win.
+CHANGE LEVEL: cs_assault
+---- Host_Changelevel ----
+Added file to download: materials/vgui/unknownRole/frame1.png
+Added file to download: materials/vgui/unknownRole/frame2.png
+Added file to download: materials/vgui/unknownRole/frame3.png
+Added file to download: materials/vgui/unknownRole/frame4.png
+Added file to download: materials/vgui/traitorRole/frame1.png
+Added file to download: materials/vgui/traitorRole/frame2.png
+Added file to download: materials/vgui/traitorRole/frame3.png
+Added file to download: materials/vgui/traitorRole/frame4.png
+Added file to download: materials/vgui/detectiveRole/frame1.png
+Added file to download: materials/vgui/detectiveRole/frame2.png
+Added file to download: materials/vgui/detectiveRole/frame3.png
+Added file to download: materials/vgui/detectiveRole/frame4.png
+Included TTT language file: brazilian_portuguese.lua
+Included TTT language file: chef.lua
+Included TTT language file: english.lua
+Included TTT language file: french.lua
+Included TTT language file: german.lua
+Included TTT language file: italian.lua
+Included TTT language file: japanese.lua
+Included TTT language file: russian.lua
+Included TTT language file: simpchinese.lua
+Included TTT language file: spanish.lua
+Included TTT language file: swedish.lua
+Included TTT language file: tradchinese.lua
+Included TTT language file: turkish.lua
+Included TTT language file: ukrainian.lua
+Hello World!
+My name is Dominic!
+Trouble In Terrorist Town gamemode initializing...
+Attempted to create unknown entity type info_ladder!
+Attempted to create unknown entity type func_buyzone!
+Attempted to create unknown entity type func_buyzone!
+Attempted to create unknown entity type func_hostage_rescue!
+TTT initializing convar settings...

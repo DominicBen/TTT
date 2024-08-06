@@ -6,6 +6,7 @@ local L = LANG.CreateLanguage("English")
 L.traitor    = "Traitor"
 L.detective  = "Detective"
 L.innocent   = "Innocent"
+L.doctor = "Doctor"
 L.last_words = "Last Words"
 
 L.terrorists = "Terrorists"

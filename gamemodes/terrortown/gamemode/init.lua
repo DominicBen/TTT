@@ -2,6 +2,7 @@
 
 AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
+AddCSLuaFile("cl_hud_cycler.lua")
 AddCSLuaFile("cl_hud.lua")
 AddCSLuaFile("cl_msgstack.lua")
 AddCSLuaFile("cl_hudpickup.lua")
@@ -170,7 +171,7 @@ function GM:Initialize()
       [OPEN_DOOR] = true,
       [OPEN_ROT] = true,
       [OPEN_BUT] = true,
-      [OPEN_NOTOGGLE]= true
+      [OPEN_NOTOGGLE] = true
    };
 
    -- More map config ent defaults
@@ -202,7 +203,8 @@ function GM:Initialize()
    WaitForPlayers()
 
    if cvars.Number("sv_alltalk", 0) > 0 then
-      ErrorNoHalt("TTT WARNING: sv_alltalk is enabled. Dead players will be able to talk to living players. TTT will now attempt to set sv_alltalk 0.\n")
+      ErrorNoHalt(
+         "TTT WARNING: sv_alltalk is enabled. Dead players will be able to talk to living players. TTT will now attempt to set sv_alltalk 0.\n")
       RunConsoleCommand("sv_alltalk", "0")
    end
 
@@ -211,7 +213,8 @@ function GM:Initialize()
       if g.folder == 'cstrike' then cstrike = true end
    end
    if not cstrike then
-      ErrorNoHalt("TTT WARNING: CS:S does not appear to be mounted by GMod. Things may break in strange ways. Server admin? Check the TTT readme for help.\n")
+      ErrorNoHalt(
+         "TTT WARNING: CS:S does not appear to be mounted by GMod. Things may break in strange ways. Server admin? Check the TTT readme for help.\n")
    end
 end
 
@@ -250,7 +253,7 @@ end
 
 function SendRoundState(state, ply)
    net.Start("TTT_RoundState")
-      net.WriteUInt(state, 3)
+   net.WriteUInt(state, 3)
    return ply and net.Send(ply) or net.Broadcast()
 end
 
@@ -384,7 +387,7 @@ local function CleanUp()
    game.CleanUpMap(false, nil, function() et.FixParentedPostCleanup() end)
 
    -- Strip players now, so that their weapons are not seen by ReplaceEntities
-   for k,v in player.Iterator() do
+   for k, v in player.Iterator() do
       if IsValid(v) then
          v:StripWeapons()
       end
@@ -454,7 +457,7 @@ function PrepareRound()
    if delay_round then
       delay_length = delay_length or 30
 
-      LANG.Msg("round_voting", {num = delay_length})
+      LANG.Msg("round_voting", { num = delay_length })
 
       timer.Create("delayedprep", delay_length, 1, PrepareRound)
       return
@@ -495,7 +498,7 @@ function PrepareRound()
    -- related to traitor's mics cutting off for a second when they're selected.
    timer.Create("selectmute", ptime - 1, 1, function() MuteForRestart(true) end)
 
-   LANG.Msg("round_begintime", {num = ptime})
+   LANG.Msg("round_begintime", { num = ptime })
    SetRoundState(ROUND_PREP)
 
    -- Delay spawning until next frame to avoid ent overload
@@ -505,7 +508,8 @@ function PrepareRound()
    -- selectmute timer.
    timer.Create("restartmute", 1, 1, function() MuteForRestart(false) end)
 
-   net.Start("TTT_ClearClientState") net.Broadcast()
+   net.Start("TTT_ClearClientState")
+   net.Broadcast()
 
    -- In case client's cleanup fails, make client set all players to innocent role
    timer.Simple(1, SendRoleReset)
@@ -526,7 +530,7 @@ end
 
 function TellTraitorsAboutTraitors()
    local traitornicks = {}
-   for k,v in player.Iterator() do
+   for k, v in player.Iterator() do
       if v:IsTraitor() then
          table.insert(traitornicks, v:Nick())
       end
@@ -534,25 +538,24 @@ function TellTraitorsAboutTraitors()
 
    -- This is ugly as hell, but it's kinda nice to filter out the names of the
    -- traitors themselves in the messages to them
-   for k,v in player.Iterator() do
+   for k, v in player.Iterator() do
       if v:IsTraitor() then
          if #traitornicks < 2 then
             LANG.Msg(v, "round_traitors_one")
             return
          else
             local names = ""
-            for i,name in ipairs(traitornicks) do
+            for i, name in ipairs(traitornicks) do
                if name != v:Nick() then
                   names = names .. name .. ", "
                end
             end
             names = string.sub(names, 1, -3)
-            LANG.Msg(v, "round_traitors_more", {names = names})
+            LANG.Msg(v, "round_traitors_more", { names = names })
          end
       end
    end
 end
-
 
 function SpawnWillingPlayers(dead_only)
    local wave_delay = GetConVar("ttt_spawn_wave_interval"):GetFloat()
@@ -578,37 +581,37 @@ function SpawnWillingPlayers(dead_only)
       end
 
       local sfn = function()
-                     local c = 0
-                     -- fill the available spawnpoints with players that need
-                     -- spawning
-                     while c < num_spawns and #to_spawn > 0 do
-                        for k, ply in ipairs(to_spawn) do
-                           if IsValid(ply) and ply:SpawnForRound() then
-                              -- a spawn ent is now occupied
-                              c = c + 1
-                           end
-                           -- Few possible cases:
-                           -- 1) player has now been spawned
-                           -- 2) player should remain spectator after all
-                           -- 3) player has disconnected
-                           -- In all cases we don't need to spawn them again.
-                           table.remove(to_spawn, k)
+         local c = 0
+         -- fill the available spawnpoints with players that need
+         -- spawning
+         while c < num_spawns and #to_spawn > 0 do
+            for k, ply in ipairs(to_spawn) do
+               if IsValid(ply) and ply:SpawnForRound() then
+                  -- a spawn ent is now occupied
+                  c = c + 1
+               end
+               -- Few possible cases:
+               -- 1) player has now been spawned
+               -- 2) player should remain spectator after all
+               -- 3) player has disconnected
+               -- In all cases we don't need to spawn them again.
+               table.remove(to_spawn, k)
 
-                           -- all spawn ents are occupied, so the rest will have
-                           -- to wait for next wave
-                           if c >= num_spawns then
-                              break
-                           end
-                        end
-                     end
+               -- all spawn ents are occupied, so the rest will have
+               -- to wait for next wave
+               if c >= num_spawns then
+                  break
+               end
+            end
+         end
 
-                     MsgN("Spawned " .. c .. " players in spawn wave.")
+         MsgN("Spawned " .. c .. " players in spawn wave.")
 
-                     if #to_spawn == 0 then
-                        timer.Remove("spawnwave")
-                        MsgN("Spawn waves ending, all players spawned.")
-                     end
-                  end
+         if #to_spawn == 0 then
+            timer.Remove("spawnwave")
+            MsgN("Spawn waves ending, all players spawned.")
+         end
+      end
 
       MsgN("Spawn waves starting.")
       timer.Create("spawnwave", wave_delay, 0, sfn)
@@ -716,10 +719,10 @@ function CheckForMapSwitch()
    local nextmap = string.upper(game.GetMapNext())
 
    if rounds_left <= 0 then
-      LANG.Msg("limit_round", {mapname = nextmap})
+      LANG.Msg("limit_round", { mapname = nextmap })
       switchmap = true
    elseif time_left <= 0 then
-      LANG.Msg("limit_time", {mapname = nextmap})
+      LANG.Msg("limit_time", { mapname = nextmap })
       switchmap = true
    end
 
@@ -727,9 +730,11 @@ function CheckForMapSwitch()
       timer.Stop("end2prep")
       timer.Simple(15, game.LoadNextMap)
    else
-      LANG.Msg("limit_left", {num = rounds_left,
-                              time = math.ceil(time_left / 60),
-                              mapname = nextmap})
+      LANG.Msg("limit_left", {
+         num = rounds_left,
+         time = math.ceil(time_left / 60),
+         mapname = nextmap
+      })
    end
 end
 
@@ -740,7 +745,7 @@ function EndRound(type)
    SetRoundState(ROUND_POST)
 
    local ptime = math.max(5, GetConVar("ttt_posttime_seconds"):GetInt())
-   LANG.Msg("win_showreport", {num = ptime})
+   LANG.Msg("win_showreport", { num = ptime })
    timer.Create("end2prep", ptime, 1, PrepareRound)
 
    -- Piggyback on "round end" time global var to show end of phase timer
@@ -790,7 +795,7 @@ function GM:TTTCheckForWin()
 
    local traitor_alive = false
    local innocent_alive = false
-   for k,v in player.Iterator() do
+   for k, v in player.Iterator() do
       if v:Alive() and v:IsTerror() then
          if v:GetTraitor() then
             traitor_alive = true
@@ -842,12 +847,14 @@ function SelectRoles()
    local prev_roles = {
       [ROLE_INNOCENT] = {},
       [ROLE_TRAITOR] = {},
-      [ROLE_DETECTIVE] = {}
+      [ROLE_DETECTIVE] = {},
+      [ROLE_DOCTOR] = {},
    };
 
    if not GAMEMODE.LastRole then GAMEMODE.LastRole = {} end
 
-   for k,v in player.Iterator() do
+   for k, v in player.Iterator() do
+      ---@class Player
       -- everyone on the spec team is in specmode
       if IsValid(v) and (not v:IsSpec()) then
          -- save previous role and sign up as possible traitor/detective
@@ -881,7 +888,7 @@ function SelectRoles()
       -- make this guy traitor if he was not a traitor last time, or if he makes
       -- a roll
       if IsValid(pply) and
-         ((not table.HasValue(prev_roles[ROLE_TRAITOR], pply)) or (math.random(1, 3) == 2)) then
+          ((not table.HasValue(prev_roles[ROLE_TRAITOR], pply)) or (math.random(1, 3) == 2)) then
          pply:SetRole(ROLE_TRAITOR)
 
          table.remove(choices, pick)
@@ -895,7 +902,6 @@ function SelectRoles()
    local ds = 0
    local min_karma = detective_karma_min:GetInt()
    while (ds < det_count) and (#choices >= 1) do
-
       -- sometimes we need all remaining choices to be detective to fill the
       -- roles up, this happens more often with a lot of detective-deniers
       if #choices <= (det_count - ds) then
@@ -914,10 +920,9 @@ function SelectRoles()
 
       -- we are less likely to be a detective unless we were innocent last round
       if (IsValid(pply) and
-          ((pply:GetBaseKarma() > min_karma and
-           table.HasValue(prev_roles[ROLE_INNOCENT], pply)) or
-           math.random(1,3) == 2)) then
-
+             ((pply:GetBaseKarma() > min_karma and
+                   table.HasValue(prev_roles[ROLE_INNOCENT], pply)) or
+                math.random(1, 3) == 2)) then
          -- if a player has specified he does not want to be detective, we skip
          -- him here (he might still get it if we don't have enough
          -- alternatives)
@@ -925,6 +930,23 @@ function SelectRoles()
             pply:SetRole(ROLE_DETECTIVE)
             ds = ds + 1
          end
+
+         table.remove(choices, pick)
+      end
+   end
+
+   --- Make one of the remaining INNO a doctor
+   if (#choices >= 1) then
+      local pick = math.random(1, #choices)
+      local pply = choices[pick]
+      if (IsValid(pply)) then
+         -- if a player has specified he does not want to be detective, we skip
+         -- him here (he might still get it if we don't have enough
+         -- alternatives)
+
+         pply:SetRole(ROLE_DOCTOR)
+         print(pply:Name() .. "is now a doctor")
+
 
          table.remove(choices, pick)
       end
@@ -941,7 +963,6 @@ function SelectRoles()
    end
 end
 
-
 local function ForceRoundRestart(ply, command, args)
    -- ply is nil on dedicated server console
    if (not IsValid(ply)) or ply:IsAdmin() or ply:IsSuperAdmin() or cvars.Bool("sv_cheats", 0) then
@@ -952,7 +973,8 @@ local function ForceRoundRestart(ply, command, args)
       -- do prep
       PrepareRound()
    else
-      ply:PrintMessage(HUD_PRINTCONSOLE, "You must be a GMod Admin or SuperAdmin on the server to use this command, or sv_cheats must be enabled.")
+      ply:PrintMessage(HUD_PRINTCONSOLE,
+         "You must be a GMod Admin or SuperAdmin on the server to use this command, or sv_cheats must be enabled.")
    end
 end
 concommand.Add("ttt_roundrestart", ForceRoundRestart)
@@ -965,4 +987,5 @@ function ShowVersion(ply)
       Msg(text)
    end
 end
+
 concommand.Add("ttt_version", ShowVersion)

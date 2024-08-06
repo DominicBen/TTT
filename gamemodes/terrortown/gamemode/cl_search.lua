@@ -5,15 +5,24 @@ local PT = LANG.GetParamTranslation
 
 local is_dmg = util.BitSet
 
-local dtt = { search_dmg_crush = DMG_CRUSH, search_dmg_bullet = DMG_BULLET, search_dmg_fall = DMG_FALL, 
-search_dmg_boom = DMG_BLAST, search_dmg_club = DMG_CLUB, search_dmg_drown = DMG_DROWN, search_dmg_stab = DMG_SLASH, 
-search_dmg_burn = DMG_BURN, search_dmg_tele = DMG_SONIC, search_dmg_car = DMG_VEHICLE }
+local dtt = {
+   search_dmg_crush = DMG_CRUSH,
+   search_dmg_bullet = DMG_BULLET,
+   search_dmg_fall = DMG_FALL,
+   search_dmg_boom = DMG_BLAST,
+   search_dmg_club = DMG_CLUB,
+   search_dmg_drown = DMG_DROWN,
+   search_dmg_stab = DMG_SLASH,
+   search_dmg_burn = DMG_BURN,
+   search_dmg_tele = DMG_SONIC,
+   search_dmg_car = DMG_VEHICLE
+}
 
 -- "From his body you can tell XXX"
 local function DmgToText(d)
    for k, v in pairs(dtt) do
       if is_dmg(d, v) then
-        return T(k)
+         return T(k)
       end
    end
    if is_dmg(d, DMG_DIRECT) then
@@ -51,20 +60,20 @@ local function WeaponToIcon(d)
 end
 
 local TypeToMat = {
-   nick="id",
-   words="halp",
-   eq_armor="armor",
-   eq_radar="radar",
-   eq_disg="disguise",
-   role={[ROLE_TRAITOR]="traitor", [ROLE_DETECTIVE]="det", [ROLE_INNOCENT]="inno"},
-   c4="code",
-   dmg=DmgToMat,
-   wep=WeaponToIcon,
-   head="head",
-   dtime="time",
-   stime="wtester",
-   lastid="lastid",
-   kills="list"
+   nick = "id",
+   words = "halp",
+   eq_armor = "armor",
+   eq_radar = "radar",
+   eq_disg = "disguise",
+   role = { [ROLE_TRAITOR] = "traitor", [ROLE_DETECTIVE] = "det", [ROLE_INNOCENT] = "inno" },
+   c4 = "code",
+   dmg = DmgToMat,
+   wep = WeaponToIcon,
+   head = "head",
+   dtime = "time",
+   stime = "wtester",
+   lastid = "lastid",
+   kills = "list"
 }
 
 -- Accessor for better fail handling
@@ -95,10 +104,10 @@ end
 function PreprocSearch(raw)
    local search = {}
    for t, d in pairs(raw) do
-      search[t] = {img=nil, text="", p=10}
+      search[t] = { img = nil, text = "", p = 10 }
 
       if t == "nick" then
-         search[t].text = PT("search_nick", {player = d})
+         search[t].text = PT("search_nick", { player = d })
          search[t].p = 1
          search[t].nick = d
       elseif t == "role" then
@@ -116,7 +125,7 @@ function PreprocSearch(raw)
             -- only append "--" if there's no ending interpunction
             local final = string.match(d, "[\\.\\!\\?]$") != nil
 
-            search[t].text = PT("search_words", {lastwords = d .. (final and "" or "--.")})
+            search[t].text = PT("search_words", { lastwords = d .. (final and "" or "--.") })
          end
       elseif t == "eq_armor" then
          if d then
@@ -136,7 +145,7 @@ function PreprocSearch(raw)
          end
       elseif t == "c4" then
          if d > 0 then
-            search[t].text= PT("search_c4", {num = d})
+            search[t].text = PT("search_c4", { num = d })
          end
       elseif t == "dmg" then
          search[t].text = DmgToText(d)
@@ -146,7 +155,7 @@ function PreprocSearch(raw)
          local wname = wep and LANG.TryTranslation(wep.PrintName)
 
          if wname then
-            search[t].text = PT("search_weapon", {weapon = wname})
+            search[t].text = PT("search_weapon", { weapon = wname })
          end
       elseif t == "head" then
          if d then
@@ -156,7 +165,7 @@ function PreprocSearch(raw)
       elseif t == "dtime" then
          if d != 0 then
             local ftime = util.SimpleTime(d, "%02i:%02i")
-            search[t].text = PT("search_time", {time = ftime})
+            search[t].text = PT("search_time", { time = ftime })
 
             search[t].text_icon = ftime
 
@@ -165,7 +174,7 @@ function PreprocSearch(raw)
       elseif t == "stime" then
          if d > 0 then
             local ftime = util.SimpleTime(d, "%02i:%02i")
-            search[t].text = PT("search_dna", {time = ftime})
+            search[t].text = PT("search_dna", { time = ftime })
 
             search[t].text_icon = ftime
          end
@@ -175,7 +184,7 @@ function PreprocSearch(raw)
             local vic = Entity(d[1])
             local dc = d[1] == 0 -- disconnected
             if dc or (IsValid(vic) and vic:IsPlayer()) then
-               search[t].text = PT("search_kills1", {player = (dc and "<Disconnected>" or vic:Nick())})
+               search[t].text = PT("search_kills1", { player = (dc and "<Disconnected>" or vic:Nick()) })
             end
          elseif num > 1 then
             local txt = T("search_kills2") .. "\n"
@@ -199,7 +208,7 @@ function PreprocSearch(raw)
          if d and d.idx != 0 then
             local ent = Entity(d.idx)
             if IsValid(ent) and ent:IsPlayer() then
-               search[t].text = PT("search_eyes", {player = ent:Nick()})
+               search[t].text = PT("search_eyes", { player = ent:Nick() })
 
                search[t].ply = ent
             end
@@ -225,27 +234,26 @@ function PreprocSearch(raw)
    return search
 end
 
-
 -- Returns a function meant to override OnActivePanelChanged, which modifies
 -- dactive and dtext based on the search information that is associated with the
 -- newly selected panel
 local function SearchInfoController(search, dactive, dtext)
    return function(s, pold, pnew)
-             local t = pnew.info_type
-             local data = search[t]
-             if not data then
-                ErrorNoHalt("Search: data not found", t, data,"\n")
-                return
-             end
+      local t = pnew.info_type
+      local data = search[t]
+      if not data then
+         ErrorNoHalt("Search: data not found", t, data, "\n")
+         return
+      end
 
-             -- If wrapping is on, the Label's SizeToContentsY misbehaves for
-             -- text that does not need wrapping. I long ago stopped wondering
-             -- "why" when it comes to VGUI. Apply hack, move on.
-             dtext:GetLabel():SetWrap(#data.text > 50)
+      -- If wrapping is on, the Label's SizeToContentsY misbehaves for
+      -- text that does not need wrapping. I long ago stopped wondering
+      -- "why" when it comes to VGUI. Apply hack, move on.
+      dtext:GetLabel():SetWrap(#data.text > 50)
 
-             dtext:SetText(data.text)
-             dactive:SetImage(data.img)
-          end
+      dtext:SetText(data.text)
+      dactive:SetImage(data.img)
+   end
 end
 
 local function ShowSearchScreen(search_raw)
@@ -257,17 +265,17 @@ local function ShowSearchScreen(search_raw)
    local bw_large = 125
    local w, h = 425, 260
 
-   local rw, rh = (w - m*2), (h - 25 - m*2)
+   local rw, rh = (w - m * 2), (h - 25 - m * 2)
    local rx, ry = 0, 0
 
    local rows = 1
    local listw, listh = rw, (64 * rows + 6)
    local listx, listy = rx, ry
 
-   ry = ry + listh + m*2
+   ry = ry + listh + m * 2
    rx = m
 
-   local descw, desch = rw - m*2, 80
+   local descw, desch = rw - m * 2, 80
    local descx, descy = rx, ry
 
    ry = ry + desch + m
@@ -307,7 +315,7 @@ local function ShowSearchScreen(search_raw)
 
    -- description area
    local dscroll = vgui.Create("DHorizontalScroller", dlist)
-   dscroll:StretchToParent(3,3,3,3)
+   dscroll:StretchToParent(3, 3, 3, 3)
 
    local ddesc = vgui.Create("ColoredBox", dcont)
    ddesc:SetColor(Color(50, 50, 50))
@@ -321,13 +329,13 @@ local function ShowSearchScreen(search_raw)
    dactive:SetSize(64, 64)
 
    local dtext = vgui.Create("ScrollLabel", ddesc)
-   dtext:SetSize(descw - 120, desch - m*2)
-   dtext:MoveRightOf(dactive, m*2)
+   dtext:SetSize(descw - 120, desch - m * 2)
+   dtext:MoveRightOf(dactive, m * 2)
    dtext:AlignTop(m)
    dtext:SetText("...")
 
    -- buttons
-   local by = rh - bh - (m/2)
+   local by = rh - bh - (m / 2)
 
    local dident = vgui.Create("DButton", dcont)
    dident:SetPos(m, by)
@@ -338,16 +346,16 @@ local function ShowSearchScreen(search_raw)
    dident:SetDisabled(client:IsSpec() or (not client:KeyDownLast(IN_WALK)))
 
    local dcall = vgui.Create("DButton", dcont)
-   dcall:SetPos(m*2 + bw_large, by)
+   dcall:SetPos(m * 2 + bw_large, by)
    dcall:SetSize(bw_large, bh)
    dcall:SetText(T("search_call"))
    dcall.DoClick = function(s)
-                      client.called_corpses = client.called_corpses or {}
-                      table.insert(client.called_corpses, search_raw.eidx)
-                      s:SetDisabled(true)
+      client.called_corpses = client.called_corpses or {}
+      table.insert(client.called_corpses, search_raw.eidx)
+      s:SetDisabled(true)
 
-                      RunConsoleCommand("ttt_call_detective", search_raw.eidx)
-                   end
+      RunConsoleCommand("ttt_call_detective", search_raw.eidx)
+   end
 
    dcall:SetDisabled(client:IsSpec() or table.HasValue(client.called_corpses or {}, search_raw.eidx))
 
@@ -410,7 +418,6 @@ local function StoreSearchResult(search)
       -- be overwritten
       local ply = search.owner
       if (not ply.search_result) or ply.search_result.show then
-
          ply.search_result = search
 
          -- this is useful for targetid
@@ -470,14 +477,14 @@ local function ReceiveRagdollSearch()
    local num_kills = net.ReadUInt(8)
    if num_kills > 0 then
       search.kills = {}
-      for i=1,num_kills do
+      for i = 1, num_kills do
          table.insert(search.kills, net.ReadUInt(plyBits))
       end
    else
       search.kills = nil
    end
 
-   search.lastid = {idx=net.ReadUInt(plyBits)}
+   search.lastid = { idx = net.ReadUInt(plyBits) }
 
    -- should we show a menu for this result?
    search.finder = net.ReadUInt(plyBits)
@@ -489,7 +496,7 @@ local function ReceiveRagdollSearch()
    --
    local words = net.ReadString()
    search.words = (words ~= "") and words or nil
-   
+
    hook.Call("TTTBodySearchEquipment", nil, search, eq)
 
    if search.show and hook.Run("TTTShowSearchScreen", search) ~= false then

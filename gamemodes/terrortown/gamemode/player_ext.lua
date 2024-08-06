@@ -1,8 +1,10 @@
-
 -- serverside extensions to player table
-
-local plymeta = FindMetaTable( "Player" )
-if not plymeta then Error("FAILED TO FIND PLAYER TABLE") return end
+---@class Player
+local plymeta = FindMetaTable("Player")
+if not plymeta then
+   Error("FAILED TO FIND PLAYER TABLE")
+   return
+end
 
 function plymeta:SetRagdollSpec(s)
    if s then
@@ -10,6 +12,7 @@ function plymeta:SetRagdollSpec(s)
    end
    self.spec_ragdoll = s
 end
+
 function plymeta:GetRagdollSpec() return self.spec_ragdoll end
 
 AccessorFunc(plymeta, "force_spec", "ForceSpec", FORCE_BOOL)
@@ -48,6 +51,7 @@ end
 function plymeta:AddCredits(amt)
    self:SetCredits(self:GetCredits() + amt)
 end
+
 function plymeta:SubtractCredits(amt) self:AddCredits(-amt) end
 
 function plymeta:SetDefaultCredits()
@@ -66,7 +70,7 @@ end
 
 function plymeta:SendCredits()
    net.Start("TTT_Credits")
-       net.WriteUInt(self:GetCredits(), 8)
+   net.WriteUInt(self:GetCredits(), 8)
    net.Send(self)
 end
 
@@ -82,7 +86,7 @@ end
 -- We do this instead of an NW var in order to limit the info to just this ply
 function plymeta:SendEquipment()
    net.Start("TTT_Equipment")
-      net.WriteUInt(self.equipment_items, 16)
+   net.WriteUInt(self.equipment_items, 16)
    net.Send(self)
 end
 
@@ -94,10 +98,10 @@ end
 function plymeta:SendBought()
    -- Send all as string, even though equipment are numbers, for simplicity
    net.Start("TTT_Bought")
-      net.WriteUInt(#self.bought, 8)
-      for k, v in pairs(self.bought) do
-         net.WriteString(v)
-      end
+   net.WriteUInt(#self.bought, 8)
+   for k, v in pairs(self.bought) do
+      net.WriteString(v)
+   end
    net.Send(self)
 end
 
@@ -118,7 +122,6 @@ function plymeta:AddBought(id)
 
    self:SendBought()
 end
-
 
 -- Strips player of all equipment
 function plymeta:StripAll()
@@ -203,7 +206,6 @@ function plymeta:RecordKill(victim)
    table.insert(self.kills, victim:SteamID64())
 end
 
-
 function plymeta:SetSpeed(slowed)
    -- For player movement prediction to work properly, ply:SetSpeed turned out
    -- to be a bad idea. It now uses GM:SetupMove, and the TTTPlayerSpeedModifier
@@ -235,14 +237,13 @@ function plymeta:SendLastWords(dmginfo)
    self.death_type = dtype
 
    net.Start("TTT_InterruptChat")
-      net.WriteUInt(self.last_words_id, 32)
+   net.WriteUInt(self.last_words_id, 32)
    net.Send(self)
 
    -- any longer than this and you're out of luck
    local ply = self
    timer.Simple(2, function() ply:ResetLastWords() end)
 end
-
 
 function plymeta:ResetViewRoll()
    local ang = self:EyeAngles()
@@ -251,7 +252,6 @@ function plymeta:ResetViewRoll()
       self:SetEyeAngles(ang)
    end
 end
-
 
 function plymeta:ShouldSpawn()
    -- do not spawn players who have not been through initspawn

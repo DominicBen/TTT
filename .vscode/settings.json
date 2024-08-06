@@ -1,0 +1,50 @@
+{
+  "Lua.workspace.library": [
+    "C:/Users/DMAN/AppData/Roaming/Code/User/globalStorage/sumneko.lua/addonManager/addons/garrysmod/module/library"
+  ],
+
+  "Lua.runtime.version": "Lua 5.1",
+  "Lua.runtime.special": {
+    "include": "require",
+    "IncludeCS": "require"
+  },
+  "Lua.runtime.nonstandardSymbol": ["continue", "&&", "||", "!=", "!", "//"],
+  "Lua.format.defaultConfig": {
+    "indent_style": "tab",
+    "indent_size": "4"
+  },
+  "Lua.diagnostics.disable": [
+    "duplicate-set-field",
+    "err-esc",
+    "err-c-long-comment",
+    "lowercase-global",
+    "need-check-nil" // TODO: needs IsValid handling somehow
+    //"err-comment-prefix",
+  ],
+  "Lua.diagnostics.globals": [
+    "GM",
+    "BaseClass",
+    "EFFECT",
+    "PANEL",
+    "ENT",
+    "_G",
+    "ENTITY",
+    "DFrame",
+    "DLabel",
+    "DButton",
+    "DScrollPanel",
+    "DSlider",
+    "DPanel",
+    "DDragBase",
+    "DComboBox",
+    "DPropertySheet",
+    "DPanelList",
+    "DTree_Node",
+    "ULib",
+    "evolve",
+    "exsto", // TTT
+    "DOF_Ents" // Sandbox
+  ],
+  "Lua.workspace.checkThirdParty": false,
+  "Lua.runtime.plugin": "SNIP"
+}
