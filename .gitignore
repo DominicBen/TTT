@@ -1,1 +1,3 @@
 *.vpk
+/console.log
+/clientside_errors.txt
