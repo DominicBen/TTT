@@ -1,6 +1,6 @@
-
 print("Hello World!")
 print("My name is Dominic!")
+local Innocent = Innocent
 ---@class Player
 local plymeta = FindMetaTable("Player")
 if not plymeta then return end
@@ -12,8 +12,50 @@ end
 function plymeta:IsSpec()
    return self:Team() == TEAM_SPEC
 end
+
 --- Get and Set Functions for Role
-AccessorFunc(plymeta, "role", "Role", FORCE_NUMBER)
+-- AccessorFunc(plymeta, "role", "Role", FORCE_NUMBER)
+--- @return Role
+function plymeta:GetRoleClass()
+   if self.roleClass == nil then
+      return Unknown
+   else
+      return self.roleClass
+   end
+end
+
+function plymeta:SetRoleClass(roleClass)
+   self.roleClass = roleClass
+end
+
+function plymeta:GetRole()
+   return self.role
+end
+
+function plymeta:SetRole(role)
+   self.role = role
+   print(ROLE_TRAITOR)
+   if Innocent == nil then
+      error("Error importing roles, check load order")
+   end
+   if role == ROLE_TRAITOR then
+      self:SetRoleClass(Traitor)
+   elseif role == ROLE_DETECTIVE then
+      self:SetRoleClass(Detective)
+   elseif role == ROLE_DOCTOR then
+      self:SetRoleClass(Doctor)
+   elseif role == ROLE_INNOCENT then
+      self:SetRoleClass(Innocent)
+   else
+      self:SetRoleClass(Innocent)
+      error("Cant find valid class in Set Role")
+   end
+   print("changed " .. self:Nick() .. " role to " .. role)
+   print(role)
+   print(self:GetRoleClass())
+   print("changed " .. self:Nick() .. " role to " .. self:GetRoleClass():getRoleString())
+end
+
 -- Role access
 function plymeta:GetTraitor()
    return self:GetRole() == ROLE_TRAITOR
@@ -57,23 +99,15 @@ function plymeta:IsActiveSpecial()
    return self:IsSpecial() and self:IsActive()
 end
 
-local role_strings = {
-   [ROLE_TRAITOR] = "traitor",
-   [ROLE_INNOCENT] = "innocent",
-   [ROLE_DETECTIVE] = "detective",
-   [ROLE_DOCTOR] = "doctor"
-}
-
 local GetRTranslation = CLIENT and LANG.GetRawTranslation or util.passthrough
 -- Returns printable role
 function plymeta:GetRoleString()
-   return GetRTranslation(role_strings[self:GetRole()]) or "???"
+   return GetRTranslation(self:GetRoleClass():getRoleString()) or "???"
 end
 
 -- Returns role language string id, caller must translate if desired
 function plymeta:GetRoleStringRaw()
-
-   return role_strings[self:GetRole()]
+   return self:GetRoleClass():getRoleString()
 end
 
 function plymeta:GetBaseKarma()
@@ -155,7 +189,9 @@ if CLIENT then
       self:AnimSetGestureWeight(GESTURE_SLOT_CUSTOM, weight)
    end
 
-   local simple_runners = {ACT_GMOD_GESTURE_DISAGREE, ACT_GMOD_GESTURE_BECON, ACT_GMOD_GESTURE_AGREE, ACT_GMOD_GESTURE_WAVE, ACT_GMOD_GESTURE_BOW, ACT_SIGNAL_FORWARD, ACT_SIGNAL_GROUP, ACT_SIGNAL_HALT, ACT_GMOD_TAUNT_CHEER, ACT_GMOD_GESTURE_ITEM_PLACE, ACT_GMOD_GESTURE_ITEM_DROP, ACT_GMOD_GESTURE_ITEM_GIVE}
+   local simple_runners = { ACT_GMOD_GESTURE_DISAGREE, ACT_GMOD_GESTURE_BECON, ACT_GMOD_GESTURE_AGREE,
+      ACT_GMOD_GESTURE_WAVE, ACT_GMOD_GESTURE_BOW, ACT_SIGNAL_FORWARD, ACT_SIGNAL_GROUP, ACT_SIGNAL_HALT,
+      ACT_GMOD_TAUNT_CHEER, ACT_GMOD_GESTURE_ITEM_PLACE, ACT_GMOD_GESTURE_ITEM_DROP, ACT_GMOD_GESTURE_ITEM_GIVE }
    local function MakeSimpleRunner(act)
       return function(ply, w)
          -- just let this gesture play itself and get out of its way

@@ -1,10 +1,5 @@
 -- Custom HUD Images
 
-local hudCyclerUnknown = HUDCycler:new("materials/vgui/unknownRole", 0.25)
-local hudCyclerTraitor = HUDCycler:new("materials/vgui/traitorRole", 0.25)
-local hudCyclerInnocent = HUDCycler:new("materials/vgui/unknownRole", 0.25)
-local hudCyclerDetective = HUDCycler:new("materials/vgui/detectiveRole", 0.25)
-
 
 -- Function to draw the current image
 
@@ -42,10 +37,6 @@ surface.CreateFont("HealthAmmo", {
 local bg_colors = {
    background_main = Color(0, 0, 10, 200),
    noround = Color(100, 100, 100, 200),
-   traitor = Color(200, 25, 25, 200),
-   innocent = Color(25, 200, 25, 200),
-   detective = Color(25, 25, 200, 200),
-   doctor = Color(50, 170, 144, 255),
 }
 
 local health_colors = {
@@ -106,7 +97,7 @@ local function GetAmmo(ply)
    local ammo_max = weap.Primary.ClipSize or 0
    return ammo_clip, ammo_max, ammo_inv
 end
-
+--- @param client Player
 local function DrawBg(x, y, width, height, client)
    -- Traitor area sizes
    local th = 30
@@ -118,15 +109,11 @@ local function DrawBg(x, y, width, height, client)
    -- encompasses entire area
    draw.RoundedBox(8, x, y, width, height, bg_colors.background_main)
    -- main border, traitor based
-   local col = bg_colors.innocent
+   local col = bg_colors.noround
    if GAMEMODE.round_state ~= ROUND_ACTIVE then
       col = bg_colors.noround
-   elseif client:GetTraitor() then
-      col = bg_colors.traitor
-   elseif client:GetDetective() then
-      col = bg_colors.detective
-   elseif client:GetRole() == ROLE_DOCTOR then
-      col = bg_colors.doctor
+   else
+      col = client:GetRoleClass():getColor()
    end
 
    draw.RoundedBox(8, x, y, tw, th, col)
@@ -246,18 +233,12 @@ local function InfoPaint(client)
    local portraitY = traitor_y - 128
 
    if round_state == ROUND_POST || round_state == ROUND_WAIT then
-   elseif client:IsActiveTraitor() then
-      hudCyclerTraitor:Draw(portraitX, portraitY)
-   elseif ! client:IsActiveSpecial() then
-      hudCyclerInnocent:Draw(portraitX, portraitY)
-   elseif client:IsActiveDetective() then
-      hudCyclerDetective:Draw(portraitX, portraitY)
-   elseif round_state == ROUND_PREP then
-      hudCyclerUnknown:Draw(portraitX, portraitY)
+   else
+      client:GetRoleClass():getPortrait():Draw(portraitX, portraitY)
    end
 
    if round_state == ROUND_ACTIVE then
-      text = L[client:GetRoleStringRaw()]
+      text = L[client:GetRoleClass():getRoleString()]
    else
       text = L[roundstate_string[round_state]]
    end

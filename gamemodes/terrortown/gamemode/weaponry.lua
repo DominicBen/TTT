@@ -1,4 +1,3 @@
-
 include("weaponry_shd.lua") -- inits WEPS tbl
 
 ---- Weapon system, pickup limits, etc
@@ -26,7 +25,7 @@ function GM:PlayerCanPickupWeapon(ply, wep)
       return false
    end
 
-   local tr = util.TraceEntity({start=wep:GetPos(), endpos=ply:GetShootPos(), mask=MASK_SOLID}, wep)
+   local tr = util.TraceEntity({ start = wep:GetPos(), endpos = ply:GetShootPos(), mask = MASK_SOLID }, wep)
    if tr.Fraction == 1.0 or tr.Entity == ply then
       wep:SetPos(ply:GetShootPos())
    end
@@ -34,37 +33,18 @@ function GM:PlayerCanPickupWeapon(ply, wep)
    return true
 end
 
--- Cache role -> default-weapons table
-local loadout_weapons = nil
-local function GetLoadoutWeapons(r)
-   if not loadout_weapons then
-      local tbl = {
-         [ROLE_INNOCENT] = {},
-         [ROLE_TRAITOR]  = {},
-         [ROLE_DETECTIVE]= {},
-         [ROLE_DOCTOR] = {},
-      };
-
-      for k, w in pairs(weapons.GetList()) do
-         if w and istable(w.InLoadoutFor) then
-            for _, wrole in pairs(w.InLoadoutFor) do
-               table.insert(tbl[wrole], WEPS.GetClass(w))
-            end
-         end
-      end
-
-      loadout_weapons = tbl
-   end
-
-   return loadout_weapons[r]
-end
-
 -- Give player loadout weapons he should have for his role that he does not have
 -- yet
 local function GiveLoadoutWeapons(ply)
-   local r = GetRoundState() == ROUND_PREP and ROLE_INNOCENT or ply:GetRole()
-   local weps = GetLoadoutWeapons(r)
-   if not weps then return end
+   local r = GetRoundState() == ROUND_PREP and Innocent or ply:GetRoleClass()
+   local weps = r:getLoadout()
+   for _, w in pairs(weps) do
+      print(w)
+   end
+   if not weps then
+      print("Cant find any weapons for role " + r:getRoleString())
+      return
+   end
 
    for _, cls in pairs(weps) do
       if not ply:HasWeapon(cls) and ply:CanCarryType(WEPS.TypeForWeapon(cls)) then
@@ -76,8 +56,8 @@ end
 local function HasLoadoutWeapons(ply)
    if ply:IsSpec() then return true end
 
-   local r = GetRoundState() == ROUND_PREP and ROLE_INNOCENT or ply:GetRole()
-   local weps = GetLoadoutWeapons(r)
+   local r = GetRoundState() == ROUND_PREP and Unknown or ply:GetRoleClass()
+   local weps = r:getLoadout()
    if not weps then return true end
 
 
@@ -115,12 +95,11 @@ CreateConVar("ttt_detective_hats", "1")
 -- Just hats right now
 local function GiveLoadoutSpecial(ply)
    if ply:IsActiveDetective() and GetConVar("ttt_detective_hats"):GetBool() and CanWearHat(ply) then
-
       if not IsValid(ply.hat) then
          local hat = ents.Create("ttt_hat_deerstalker")
          if not IsValid(hat) then return end
 
-         hat:SetPos(ply:GetPos() + Vector(0,0,70))
+         hat:SetPos(ply:GetPos() + Vector(0, 0, 70))
          hat:SetAngles(ply:GetAngles())
 
          hat:SetParent(ply)
@@ -156,7 +135,7 @@ local function LateLoadout(id)
 end
 
 -- Note that this is called both when a player spawns and when a round starts
-function GM:PlayerLoadout( ply )
+function GM:PlayerLoadout(ply)
    if IsValid(ply) and (not ply:IsSpec()) then
       -- clear out equipment flags
       ply:ResetEquipment()
@@ -172,7 +151,7 @@ function GM:PlayerLoadout( ply )
       if not HasLoadoutWeapons(ply) then
          MsgN("Could not spawn all loadout weapons for " .. ply:Nick() .. ", will retry.")
          timer.Create("lateloadout" .. ply:EntIndex(), 1, 0,
-                      function() LateLoadout(ply:EntIndex()) end)
+            function() LateLoadout(ply:EntIndex()) end)
       end
    end
 end
@@ -285,10 +264,10 @@ local function DropActiveAmmo(ply)
    box.AmmoAmount = amt
 
    timer.Simple(2, function()
-                      if IsValid(box) then
-                         box:SetOwner(nil)
-                      end
-                   end)
+      if IsValid(box) then
+         box:SetOwner(nil)
+      end
+   end)
 end
 concommand.Add("ttt_dropammo", DropActiveAmmo)
 
@@ -350,7 +329,7 @@ local function OrderEquipment(ply, cmd, args)
    -- it's an item if the arg is an id instead of an ent name
    local id = args[1]
    local is_item = tonumber(id)
-   
+
    if not hook.Run("TTTCanOrderEquipment", ply, id, is_item) then return end
 
    -- we use weapons.GetStored to save time on an unnecessary copy, we will not
@@ -414,17 +393,17 @@ local function OrderEquipment(ply, cmd, args)
       ply:AddBought(id)
 
       timer.Simple(0.5,
-                   function()
-                      if not IsValid(ply) then return end
-                      net.Start("TTT_BoughtItem")
-                      net.WriteBit(is_item)
-                      if is_item then
-                         net.WriteUInt(id, 16)
-                      else
-                         net.WriteString(id)
-                      end
-                      net.Send(ply)
-                   end)
+         function()
+            if not IsValid(ply) then return end
+            net.Start("TTT_BoughtItem")
+            net.WriteBit(is_item)
+            if is_item then
+               net.WriteUInt(id, 16)
+            else
+               net.WriteString(id)
+            end
+            net.Send(ply)
+         end)
 
       hook.Call("TTTOrderedEquipment", GAMEMODE, ply, id, is_item)
    end
@@ -480,8 +459,8 @@ local function TransferCredits(ply, cmd, args)
       ply:SubtractCredits(credits)
       target:AddCredits(credits)
 
-      LANG.Msg(ply, "xfer_success", {player=target:Nick()})
-      LANG.Msg(target, "xfer_received", {player = ply:Nick(), num = credits})
+      LANG.Msg(ply, "xfer_success", { player = target:Nick() })
+      LANG.Msg(target, "xfer_received", { player = ply:Nick(), num = credits })
    end
 end
 concommand.Add("ttt_transfer_credits", TransferCredits)

@@ -18,3 +18,4 @@ end
 AddPngFilesFromFolder("materials/vgui/unknownRole")
 AddPngFilesFromFolder("materials/vgui/traitorRole")
 AddPngFilesFromFolder("materials/vgui/detectiveRole")
+AddPngFilesFromFolder("materials/vgui/doctorRole")

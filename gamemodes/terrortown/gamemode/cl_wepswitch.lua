@@ -1,4 +1,3 @@
-
 -- we need our own weapon switcher because the hl2 one skips empty weapons
 
 local math = math
@@ -25,75 +24,62 @@ local margin = 10
 local width = 300
 local height = 20
 
-local barcorner = surface.GetTextureID( "gui/corner8" )
+local barcorner = surface.GetTextureID("gui/corner8")
 
 local col_active = {
-   tip = {
-      [ROLE_INNOCENT]  = Color(55, 170, 50, 255),
-      [ROLE_TRAITOR]   = Color(180, 50, 40, 255),
-      [ROLE_DETECTIVE] = Color(50, 60, 180, 255),
-      [ROLE_DOCTOR] = Color(50, 170, 144,255),
-   },
-
    bg = Color(20, 20, 20, 250),
 
    text_empty = Color(200, 20, 20, 255),
    text = Color(255, 255, 255, 255),
 
-   shadow = 255
+   shadow = 255,
+   dark = false
 };
 
 local col_dark = {
-   tip = {
-      [ROLE_INNOCENT]  = Color(60, 160, 50, 155),
-      [ROLE_TRAITOR]   = Color(160, 50, 60, 155),
-      [ROLE_DETECTIVE] = Color(50, 60, 160, 155),
-      [ROLE_DOCTOR] = Color(25, 88, 75),
-   },
-
    bg = Color(20, 20, 20, 200),
 
    text_empty = Color(200, 20, 20, 100),
    text = Color(255, 255, 255, 100),
 
-   shadow = 100
+   shadow = 100,
+   dark = true
 };
 
 -- Draw a bar in the style of the the weapon pickup ones
 local round = math.Round
 function WSWITCH:DrawBarBg(x, y, w, h, col)
    local rx = round(x - 4)
-   local ry = round(y - (h / 2)-4)
+   local ry = round(y - (h / 2) - 4)
    local rw = round(w + 9)
    local rh = round(h + 8)
 
    local b = 8 --bordersize
    local bh = b / 2
 
-   local role = LocalPlayer():GetRole() or ROLE_INNOCENT
+   local role = LocalPlayer():GetRoleClass() or Unknown
 
-   local c = col.tip[role]
+   local c = col.dark and role:getDarkColor() or role:getColor()
 
    -- Draw the colour tip
    surface.SetTexture(barcorner)
 
    surface.SetDrawColor(c.r, c.g, c.b, c.a)
-   surface.DrawTexturedRectRotated( rx + bh , ry + bh, b, b, 0 ) 
-   surface.DrawTexturedRectRotated( rx + bh , ry + rh -bh, b, b, 90 ) 
-   surface.DrawRect( rx, ry+b, b, rh-b*2 )
-   surface.DrawRect( rx+b, ry, h - 4, rh )
-   
+   surface.DrawTexturedRectRotated(rx + bh, ry + bh, b, b, 0)
+   surface.DrawTexturedRectRotated(rx + bh, ry + rh - bh, b, b, 90)
+   surface.DrawRect(rx, ry + b, b, rh - b * 2)
+   surface.DrawRect(rx + b, ry, h - 4, rh)
+
    -- Draw the remainder
    -- Could just draw a full roundedrect bg and overdraw it with the tip, but
    -- I don't have to do the hard work here anymore anyway
    c = col.bg
    surface.SetDrawColor(c.r, c.g, c.b, c.a)
 
-   surface.DrawRect( rx+b+h-4, ry,  rw - (h - 4) - b*2,  rh )
-   surface.DrawTexturedRectRotated( rx + rw - bh , ry + rh - bh, b, b, 180 ) 
-   surface.DrawTexturedRectRotated( rx + rw - bh , ry + bh, b, b, 270 ) 
-   surface.DrawRect( rx+rw-b,  ry+b,  b,  rh-b*2 )
-
+   surface.DrawRect(rx + b + h - 4, ry, rw - (h - 4) - b * 2, rh)
+   surface.DrawTexturedRectRotated(rx + rw - bh, ry + rh - bh, b, b, 180)
+   surface.DrawTexturedRectRotated(rx + rw - bh, ry + bh, b, b, 270)
+   surface.DrawRect(rx + rw - b, ry + b, b, rh - b * 2)
 end
 
 local TryTranslation = LANG.TryTranslation
@@ -111,12 +97,19 @@ function WSWITCH:DrawWeapon(x, y, c, wep)
    end
 
    -- Slot
-   local spec = {text=wep.Slot+1, font="Trebuchet22", pos={x+4, y}, yalign=TEXT_ALIGN_CENTER, color=c.text}
+   local spec = {
+      text = wep.Slot + 1,
+      font = "Trebuchet22",
+      pos = { x + 4, y },
+      yalign = TEXT_ALIGN_CENTER,
+      color = c
+          .text
+   }
    draw.TextShadow(spec, 1, c.shadow)
 
    -- Name
-   spec.text  = name
-   spec.font  = "TimeLeft"
+   spec.text   = name
+   spec.font   = "TimeLeft"
    spec.pos[1] = x + 10 + height
    draw.Text(spec)
 
@@ -129,7 +122,7 @@ function WSWITCH:DrawWeapon(x, y, c, wep)
 
       -- Ammo
       spec.text   = ammo
-      spec.pos[1] = ScrW() - margin*3
+      spec.pos[1] = ScrW() - margin * 3
       spec.xalign = TEXT_ALIGN_RIGHT
       spec.color  = col
       draw.Text(spec)
@@ -143,7 +136,7 @@ function WSWITCH:Draw(client)
 
    local weps = self.WeaponCache
 
-   local x = ScrW() - width - margin*2
+   local x = ScrW() - width - margin * 2
    local y = ScrH() - (#weps * (height + margin))
 
    local col = col_dark
@@ -156,7 +149,6 @@ function WSWITCH:Draw(client)
 
       self:DrawBarBg(x, y, width, height, col)
       if not self:DrawWeapon(x, y, col, wep) then
-         
          self:UpdateWeaponCache()
          return
       end
@@ -175,7 +167,7 @@ local function CopyVals(src, dest)
       if IsValid(v) then
          table.insert(dest, v)
       end
-   end   
+   end
 end
 
 function WSWITCH:UpdateWeaponCache()
@@ -229,7 +221,7 @@ function WSWITCH:DoSelect(idx)
    if self.cv.fast:GetBool() then
       -- immediately confirm if fastswitch is on
       self:ConfirmSelection(self.cv.display:GetBool())
-   end   
+   end
 end
 
 -- Numeric key access to direct slots
@@ -299,7 +291,7 @@ end
 
 -- Allow for suppression of the attack command
 function WSWITCH:PreventAttack()
-   return self.Show and !self.cv.fast:GetBool()
+   return self.Show and ! self.cv.fast:GetBool()
 end
 
 function WSWITCH:Think()
@@ -331,7 +323,7 @@ local function QuickSlot(ply, cmd, args)
       else
          WSWITCH:SelectAndConfirm(slot)
       end
-   end   
+   end
 end
 concommand.Add("ttt_quickslot", QuickSlot)
 

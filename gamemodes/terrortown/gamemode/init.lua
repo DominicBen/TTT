@@ -39,9 +39,21 @@ AddCSLuaFile("vgui/sb_main.lua")
 AddCSLuaFile("vgui/sb_row.lua")
 AddCSLuaFile("vgui/sb_team.lua")
 AddCSLuaFile("vgui/sb_info.lua")
+AddCSLuaFile("roles/role.lua")
+AddCSLuaFile("roles/detective.lua")
+AddCSLuaFile("roles/traitor.lua")
+AddCSLuaFile("roles/innocent.lua")
+AddCSLuaFile("roles/doctor.lua")
+AddCSLuaFile("roles/unknown.lua")
 
 include("shared.lua")
 
+include("roles/role.lua")
+include("roles/detective.lua")
+include("roles/traitor.lua")
+include("roles/innocent.lua")
+include("roles/doctor.lua")
+include("roles/unknown.lua")
 include("karma.lua")
 include("entity.lua")
 include("radar.lua")
@@ -821,35 +833,9 @@ function GM:TTTCheckForWin()
    return WIN_NONE
 end
 
-local function GetTraitorCount(ply_count)
-   -- get number of traitors: pct of players rounded down
-   local traitor_count = math.floor(ply_count * GetConVar("ttt_traitor_pct"):GetFloat())
-   -- make sure there is at least 1 traitor
-   traitor_count = math.Clamp(traitor_count, 1, GetConVar("ttt_traitor_max"):GetInt())
-
-   return traitor_count
-end
-
-
-local function GetDetectiveCount(ply_count)
-   if ply_count < GetConVar("ttt_detective_min_players"):GetInt() then return 0 end
-
-   local det_count = math.floor(ply_count * GetConVar("ttt_detective_pct"):GetFloat())
-   -- limit to a max
-   det_count = math.Clamp(det_count, 1, GetConVar("ttt_detective_max"):GetInt())
-
-   return det_count
-end
-
-
 function SelectRoles()
    local choices = {}
-   local prev_roles = {
-      [ROLE_INNOCENT] = {},
-      [ROLE_TRAITOR] = {},
-      [ROLE_DETECTIVE] = {},
-      [ROLE_DOCTOR] = {},
-   };
+   local prev_roles = {};
 
    if not GAMEMODE.LastRole then GAMEMODE.LastRole = {} end
 
@@ -859,8 +845,11 @@ function SelectRoles()
       if IsValid(v) and (not v:IsSpec()) then
          -- save previous role and sign up as possible traitor/detective
 
-         local r = GAMEMODE.LastRole[v:SteamID64()] or v:GetRole() or ROLE_INNOCENT
+         local r = GAMEMODE.LastRole[v:SteamID64()] or v:GetRoleClass():getRoleString() or Innocent.name
 
+         if prev_roles[r] == nil then
+            prev_roles[r] = {} -- Initialize as an empty table if it does not exist
+         end
          table.insert(prev_roles[r], v)
 
          table.insert(choices, v)
@@ -871,86 +860,15 @@ function SelectRoles()
 
    -- determine how many of each role we want
    local choice_count = #choices
-   local traitor_count = GetTraitorCount(choice_count)
-   local det_count = GetDetectiveCount(choice_count)
 
    if choice_count == 0 then return end
 
-   -- first select traitors
-   local ts = 0
-   while (ts < traitor_count) and (#choices >= 1) do
-      -- select random index in choices table
-      local pick = math.random(1, #choices)
-
-      -- the player we consider
-      local pply = choices[pick]
-
-      -- make this guy traitor if he was not a traitor last time, or if he makes
-      -- a roll
-      if IsValid(pply) and
-          ((not table.HasValue(prev_roles[ROLE_TRAITOR], pply)) or (math.random(1, 3) == 2)) then
-         pply:SetRole(ROLE_TRAITOR)
-
-         table.remove(choices, pick)
-         ts = ts + 1
-      end
-   end
-
-   -- now select detectives, explicitly choosing from players who did not get
-   -- traitor, so becoming detective does not mean you lost a chance to be
-   -- traitor
-   local ds = 0
-   local min_karma = detective_karma_min:GetInt()
-   while (ds < det_count) and (#choices >= 1) do
-      -- sometimes we need all remaining choices to be detective to fill the
-      -- roles up, this happens more often with a lot of detective-deniers
-      if #choices <= (det_count - ds) then
-         for k, pply in ipairs(choices) do
-            if IsValid(pply) then
-               pply:SetRole(ROLE_DETECTIVE)
-            end
-         end
-
-         break -- out of while
-      end
+   Traitor.selectRoles(choice_count, choices, prev_roles)
+   Detective.selectRoles(choice_count, choices, prev_roles)
+   Doctor.selectRoles(1, choices, prev_roles)
+   Innocent.selectRoles(0, choices, prev_roles)
 
 
-      local pick = math.random(1, #choices)
-      local pply = choices[pick]
-
-      -- we are less likely to be a detective unless we were innocent last round
-      if (IsValid(pply) and
-             ((pply:GetBaseKarma() > min_karma and
-                   table.HasValue(prev_roles[ROLE_INNOCENT], pply)) or
-                math.random(1, 3) == 2)) then
-         -- if a player has specified he does not want to be detective, we skip
-         -- him here (he might still get it if we don't have enough
-         -- alternatives)
-         if not pply:GetAvoidDetective() then
-            pply:SetRole(ROLE_DETECTIVE)
-            ds = ds + 1
-         end
-
-         table.remove(choices, pick)
-      end
-   end
-
-   --- Make one of the remaining INNO a doctor
-   if (#choices >= 1) then
-      local pick = math.random(1, #choices)
-      local pply = choices[pick]
-      if (IsValid(pply)) then
-         -- if a player has specified he does not want to be detective, we skip
-         -- him here (he might still get it if we don't have enough
-         -- alternatives)
-
-         pply:SetRole(ROLE_DOCTOR)
-         print(pply:Name() .. "is now a doctor")
-
-
-         table.remove(choices, pick)
-      end
-   end
 
    GAMEMODE.LastRole = {}
 
@@ -959,7 +877,7 @@ function SelectRoles()
       ply:SetDefaultCredits()
 
       -- store a steamid64 -> role map
-      GAMEMODE.LastRole[ply:SteamID64()] = ply:GetRole()
+      GAMEMODE.LastRole[ply:SteamID64()] = ply:GetRoleClass():getRoleString()
    end
 end
 
